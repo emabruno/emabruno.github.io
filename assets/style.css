@@ -1,0 +1,340 @@
+/* Emmanuel Bruno — site styles
+   Fonts: Playfair Display (name, titles) + EB Garamond (text), both free from Google Fonts. */
+
+:root {
+  --ink: #000;
+  --muted: #6b6b6b;
+  --paper: #fff;
+  --line: #e6e6e6;
+  --serif-display: "Playfair Display", Georgia, serif;
+  --serif-text: "EB Garamond", Garamond, Georgia, serif;
+  --gutter: clamp(16px, 3vw, 40px);
+  --header-h: 88px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif-text);
+  font-size: 18px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 8px;
+  background: var(--ink); color: var(--paper); padding: 8px 14px; z-index: 100;
+}
+.skip-link:focus { left: 8px; }
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--header-h);
+  padding: 0 var(--gutter);
+}
+
+.site-title {
+  font-family: var(--serif-display);
+  font-size: 27px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav { display: flex; align-items: center; gap: 18px; }
+
+.site-nav a {
+  font-size: 17px;
+  text-decoration: none;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+.site-nav a:hover,
+.site-nav a[aria-current] { border-bottom-color: currentColor; }
+
+.site-nav .icon { display: inline-flex; border: 0; padding: 4px 0; }
+.site-nav .icon svg { width: 17px; height: 17px; }
+
+/* Header sits on top of the photo on the homepage */
+.home .site-header {
+  position: absolute; inset: 0 0 auto 0;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+}
+.home .site-nav svg { filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.35)); }
+
+/* ---------- Homepage: hover-to-reveal project covers ---------- */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+  background: #222;
+  color: #fff;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.9s ease, transform 1.6s ease;
+}
+.hero-bg.is-active { opacity: 1; transform: scale(1); }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.hero-bg::after { /* light veil so white titles stay readable on bright fog */
+  content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.2);
+}
+
+.hero-titles {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  column-gap: 7.5rem;
+  row-gap: 2.2rem;
+  margin: 0;
+  padding: var(--header-h) var(--gutter);
+  list-style: none;
+  text-align: center;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+}
+
+.hero-titles li { flex: 0 0 auto; }
+.hero-titles li.wide { flex-basis: 100%; }
+
+.hero-titles a {
+  font-family: var(--serif-display);
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.2;
+  text-decoration: none;
+  transition: opacity 0.4s ease;
+}
+.spaced { letter-spacing: 0.35em; margin-right: -0.35em; text-transform: uppercase; }
+
+/* Dim the titles you're not pointing at */
+.hero-titles:hover a,
+.hero-titles:focus-within a { opacity: 0.45; }
+.hero-titles a:hover,
+.hero-titles a:focus-visible { opacity: 1 !important; }
+
+/* ---------- Project pages ---------- */
+
+main { display: block; }
+
+.project { padding: 24px var(--gutter) 40px; }
+
+.project-title {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.2;
+  text-align: center;
+  margin: 8px 0 32px;
+}
+
+/* Slideshow: native horizontal scroll with snapping, so phones get swipe for free */
+.slideshow { position: relative; max-width: 1400px; margin: 0 auto; }
+
+.slides {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  outline: none;
+}
+.slides::-webkit-scrollbar { display: none; }
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(320px, calc(100vh - 230px), 66vw);
+  margin: 0;
+  padding: 0 44px;
+}
+.slide img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; background: #f4f4f4; }
+
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px; height: 64px;
+  border: 0; background: none; cursor: pointer;
+  color: var(--ink);
+  font-size: 30px; line-height: 1;
+  font-family: var(--serif-text);
+  display: flex; align-items: center; justify-content: center;
+}
+.slide-btn.prev { left: 0; }
+.slide-btn.next { right: 0; }
+.slide-btn:disabled { opacity: 0.2; cursor: default; }
+
+.slide-count {
+  text-align: center;
+  font-size: 15px;
+  color: var(--muted);
+  margin: 14px 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.thumbs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 18px auto 0;
+  padding: 0;
+  list-style: none;
+}
+.thumbs li { flex: none; }
+.thumbs button {
+  display: block;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.25s ease;
+}
+.thumbs button:hover,
+.thumbs button[aria-current="true"] { opacity: 1; }
+.thumbs img { height: 54px; width: auto; }
+
+/* Stacked gallery (S O V R A S T A T I O N) */
+.stack {
+  display: grid;
+  gap: clamp(32px, 6vw, 80px);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.stack img { margin: 0 auto; max-height: 92vh; width: auto; }
+
+.js .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 1s ease, transform 1s ease; }
+.js .fade-in.is-visible { opacity: 1; transform: none; }
+
+/* Essay under Full Emptiness */
+.essay {
+  max-width: 1100px;
+  margin: 72px auto 0;
+  columns: 3 280px;
+  column-gap: 48px;
+}
+.essay p { margin: 0 0 1.1em; break-inside: avoid; }
+.essay .signoff { text-align: right; font-style: italic; }
+
+/* Previous / next project */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 72px auto 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.pager a { text-decoration: none; display: flex; flex-direction: column; }
+.pager a.next { margin-left: auto; text-align: right; }
+.pager small { font-size: 14px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.pager span { font-family: var(--serif-display); font-size: clamp(20px, 2.4vw, 28px); line-height: 1.3; }
+.pager a:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+/* ---------- About ---------- */
+
+.portrait { position: relative; margin: 0; }
+.portrait img { width: 100%; height: min(80vh, 66vw); object-fit: cover; object-position: 40% 35%; }
+
+.social-circles {
+  position: absolute; left: var(--gutter); bottom: 24px;
+  display: flex; gap: 10px;
+}
+.social-circles a {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #000; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.social-circles svg { width: 18px; height: 18px; }
+
+.bio {
+  max-width: 600px;
+  margin: 64px auto 0;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
+.bio p { margin: 0 0 1.1em; }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  padding: 56px var(--gutter) 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+/* ---------- Not found ---------- */
+
+.notfound { min-height: 60vh; display: grid; place-content: center; text-align: center; padding: 0 var(--gutter); }
+.notfound h1 { font-family: var(--serif-display); font-weight: 400; font-size: 34px; margin: 0 0 8px; }
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 700px) {
+  :root { --header-h: 68px; }
+  body { font-size: 17px; }
+  .site-title { font-size: 21px; }
+  .site-nav { gap: 14px; }
+  .site-nav a { font-size: 16px; }
+
+  .hero-titles { flex-direction: column; flex-wrap: nowrap; row-gap: 1.8rem; }
+  .hero-titles li.wide { flex-basis: auto; }
+  .hero-titles .spaced { font-size: 24px; letter-spacing: 0.3em; margin-right: -0.3em; }
+
+  .project { padding-top: 8px; }
+  .slide { height: auto; max-height: 80vh; padding: 0; }
+  .slide img { max-height: 80vh; }
+  .slide-btn { display: none; } /* swipe instead */
+  .thumbs { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding-bottom: 6px; }
+  .thumbs img { height: 44px; }
+
+  .essay { margin-top: 48px; }
+  .pager { margin-top: 48px; }
+  .bio { margin-top: 40px; text-align: left; }
+  .portrait img { height: 62vh; object-position: 35% 30%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+  .js .fade-in { opacity: 1; transform: none; }
+}
