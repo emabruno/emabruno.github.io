@@ -623,6 +623,16 @@ button.pv-print[data-finish="white"] { border-color: #fcfcfa; }
   .portrait img { height: 62vh; object-position: 35% 30%; }
 }
 
+/* Phones: keep the name and the whole menu on one line */
+@media (max-width: 430px) {
+  .site-title { font-size: 18px; }
+  .site-nav { gap: 10px; }
+  .site-nav a { font-size: 15px; }
+}
+@media (max-width: 350px) {
+  .site-nav .icon { display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
   .js .fade-in { opacity: 1; transform: none; }
